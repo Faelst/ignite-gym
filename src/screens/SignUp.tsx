@@ -1,15 +1,26 @@
+import { useNavigation } from '@react-navigation/native'
 import { Center, Heading, Image, Text, VStack } from 'native-base'
 
 import LogoSvg from '@assets/logo.svg'
 import BackGroundImg from '@assets/background.png'
+
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
 
+import { AuthNavigatorRouterProps } from '@routes/auth.routes'
+
 export function SignUp() {
+  const navigation = useNavigation<AuthNavigatorRouterProps>()
+
+  const handleSignIn = () => {
+    navigation.navigate('signIn')
+  }
+
   return (
     <VStack flex={1} bg="gray.700" px={5}>
       <Image
         source={BackGroundImg}
+        defaultSource={BackGroundImg}
         alt="Pessoas Treinando"
         resizeMode="contain"
         position="absolute"
@@ -44,7 +55,12 @@ export function SignUp() {
         <Button title="Criar e acessar" />
       </Center>
 
-      <Button title="Voltar para o login" variant="outline" mt={24} />
+      <Button
+        title="Voltar para o login"
+        variant="outline"
+        mt={24}
+        onPress={handleSignIn}
+      />
     </VStack>
   )
 }
