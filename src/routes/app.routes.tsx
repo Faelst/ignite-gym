@@ -4,7 +4,6 @@ import { Home } from '@screens/Home'
 import { Profile } from '@screens/Profile'
 
 import HomeSvg from '@assets/home.svg'
-import ExerciseSvg from '@assets/exercise.svg'
 import HistorySvg from '@assets/history.svg'
 import ProfileSvg from '@assets/profile.svg'
 
