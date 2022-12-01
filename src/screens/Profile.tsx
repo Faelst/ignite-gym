@@ -15,6 +15,7 @@ import { Input } from '@components/Input'
 import { Button } from '@components/Button'
 
 const PHOTO_SIZE = 33
+const INPUT_COLOR = 'gray.400'
 
 export function Profile() {
   const [isLoadingAvatar, setIsLoadingAvatar] = useState(false)
@@ -22,7 +23,12 @@ export function Profile() {
     <VStack flex={1}>
       <ScreenHeader title="Perfil" />
 
-      <ScrollView px={4}>
+      <ScrollView
+        px={4}
+        contentContainerStyle={{
+          paddingBottom: 40,
+        }}
+      >
         <Center mt={6} px={10}>
           {isLoadingAvatar ? (
             <Skeleton
@@ -55,18 +61,18 @@ export function Profile() {
           )}
         </Center>
 
-        <Input placeholder="Nome" bg="gray.600" />
-        <Input placeholder="E-mail" bg="gray.600" isDisabled />
+        <Input placeholder="Nome" bg={INPUT_COLOR} />
+        <Input placeholder="E-mail" bg={INPUT_COLOR} isDisabled />
 
         <Heading color="gray.200" fontSize="md" mt={8} mb={5}>
           Alterar Senha
         </Heading>
-        <Input placeholder="Antiga senha" bg="gray.600" secureTextEntry />
+        <Input placeholder="Antiga senha" bg={INPUT_COLOR} secureTextEntry />
 
-        <Input placeholder="Nova senha" bg="gray.600" secureTextEntry />
+        <Input placeholder="Nova senha" bg={INPUT_COLOR} secureTextEntry />
         <Input
           placeholder="Confirmar a nova senha"
-          bg="gray.600"
+          bg={INPUT_COLOR}
           secureTextEntry
         />
 

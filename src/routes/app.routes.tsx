@@ -45,7 +45,7 @@ export function AppRoutes() {
           paddingTop: sizes[6],
         },
       }}
-      initialRouteName="profile"
+      initialRouteName="exercise"
     >
       <Screen
         name="home"

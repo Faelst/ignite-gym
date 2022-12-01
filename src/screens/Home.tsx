@@ -1,6 +1,8 @@
 import { ExerciseCard } from '@components/ExerciseCard'
 import { Group } from '@components/Group'
 import { HomeHeader } from '@components/HomeHeader'
+import { useNavigation } from '@react-navigation/native'
+import { AppNavigatorRouterProps } from '@routes/app.routes'
 import { FlatList, Heading, HStack, Text, VStack } from 'native-base'
 import { useState } from 'react'
 
@@ -13,7 +15,7 @@ export function Home() {
       group: 'peito',
       description: 'Supino reto com barra',
       series: 3,
-      repetitions: 10, 
+      repetitions: 10,
     },
     {
       name: 'Supino Reto',
@@ -23,6 +25,12 @@ export function Home() {
       repetitions: 10,
     },
   ])
+
+  const navigation = useNavigation<AppNavigatorRouterProps>()
+
+  const handleNavigateToExercise = () => {
+    navigation.navigate('exercise')
+  }
 
   return (
     <VStack flex={1}>
@@ -60,7 +68,9 @@ export function Home() {
         <FlatList
           data={exercises}
           keyExtractor={(item) => item.name}
-          renderItem={({ item }) => <ExerciseCard />}
+          renderItem={({ item }) => (
+            <ExerciseCard onPress={handleNavigateToExercise} />
+          )}
           showsVerticalScrollIndicator={false}
           _contentContainerStyle={{
             paddingBottom: 20,
