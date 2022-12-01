@@ -5,15 +5,15 @@ import { FlatList, Heading, HStack, Text, VStack } from 'native-base'
 import { useState } from 'react'
 
 export function Home() {
-  const [groupSelected, setGroupSelected] = useState('')
-  const [groups, setGroups] = useState(['costa', 'ombro', 'peito', 'perna'])
+  const [groupSelected, setGroupSelected] = useState('costas')
+  const [groups, setGroups] = useState(['costas', 'ombro', 'peito', 'perna'])
   const [exercises, setExercises] = useState([
     {
       name: 'Supino Reto',
       group: 'peito',
       description: 'Supino reto com barra',
       series: 3,
-      repetitions: 10,
+      repetitions: 10, 
     },
     {
       name: 'Supino Reto',
@@ -33,7 +33,7 @@ export function Home() {
         renderItem={({ item }) => (
           <Group
             name={item}
-            isActive={groupSelected === item}
+            isActive={groupSelected.toUpperCase() === item.toUpperCase()}
             onPress={() => setGroupSelected(item)}
           />
         )}
