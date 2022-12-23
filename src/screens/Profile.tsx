@@ -5,12 +5,15 @@ import {
   Skeleton,
   Text,
   VStack,
+  useToast,
 } from 'native-base'
+import * as ImagePicker from 'expo-image-picker'
+import * as FileSystem from 'expo-file-system'
 
 import { ScreenHeader } from '@components/ScreenHeader'
 import { Avatar } from '@components/Avatar'
 import { useState } from 'react'
-import { TouchableOpacity } from 'react-native'
+import { Alert, TouchableOpacity } from 'react-native'
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
 
@@ -19,6 +22,47 @@ const INPUT_COLOR = 'gray.400'
 
 export function Profile() {
   const [isLoadingAvatar, setIsLoadingAvatar] = useState(false)
+  const [userPhoto, setUserPhoto] = useState('https://github.com/faelst.png')
+
+  const toast = useToast()
+
+  const handleSelectAvatar = async () => {
+    setIsLoadingAvatar(true)
+    try {
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+      })
+
+      if (photoSelected.canceled) {
+        return
+      }
+
+      if (!photoSelected.assets[0].uri) {
+        return
+      }
+
+      const file = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
+
+      if (!file.exists && Number(file.size) / 1024 / 1024 > 3) {
+        return toast.show({
+          title: 'Essa imagem é muito grande. Escolha uma ate 3MB',
+          bg: 'red.500',
+          color: 'white',
+          placement: 'top',
+        })
+      }
+
+      setUserPhoto(photoSelected.assets[0].uri)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoadingAvatar(false)
+    }
+  }
+
   return (
     <VStack flex={1}>
       <ScreenHeader title="Perfil" />
@@ -41,12 +85,12 @@ export function Profile() {
           ) : (
             <>
               <Avatar
-                source={{ uri: 'https://github.com/faelst.png' }}
+                source={{ uri: userPhoto }}
                 alt="foto do usuário"
                 size={PHOTO_SIZE}
               />
 
-              <TouchableOpacity>
+              <TouchableOpacity onPress={handleSelectAvatar}>
                 <Text
                   color="green.500"
                   fontSize="md"

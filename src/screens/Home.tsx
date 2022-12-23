@@ -24,6 +24,27 @@ export function Home() {
       series: 3,
       repetitions: 10,
     },
+    {
+      name: 'Supino Reto',
+      group: 'peito',
+      description: 'Supino reto com barra',
+      series: 3,
+      repetitions: 10,
+    },
+    {
+      name: 'Supino Reto',
+      group: 'peito',
+      description: 'Supino reto com barra',
+      series: 3,
+      repetitions: 10,
+    },
+    {
+      name: 'Supino Reto',
+      group: 'peito',
+      description: 'Supino reto com barra',
+      series: 3,
+      repetitions: 10,
+    },
   ])
 
   const navigation = useNavigation<AppNavigatorRouterProps>()
@@ -52,6 +73,7 @@ export function Home() {
         }}
         my={6}
         maxH={10}
+        minH={10}
       />
 
       <VStack flex={1} px={4}>

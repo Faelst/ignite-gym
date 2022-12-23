@@ -29,7 +29,7 @@ export function AppRoutes() {
   const { colors, sizes } = useTheme()
 
   const iconSize = sizes[6]
-  // history is default screen
+
   return (
     <Navigator
       screenOptions={{
