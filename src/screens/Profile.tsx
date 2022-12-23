@@ -108,7 +108,13 @@ export function Profile() {
         <Input placeholder="Nome" bg={INPUT_COLOR} />
         <Input placeholder="E-mail" bg={INPUT_COLOR} isDisabled />
 
-        <Heading color="gray.200" fontSize="md" mt={8} mb={5}>
+        <Heading
+          color="gray.200"
+          fontSize="md"
+          mt={8}
+          mb={5}
+          fontFamily="heading"
+        >
           Alterar Senha
         </Heading>
         <Input placeholder="Antiga senha" bg={INPUT_COLOR} secureTextEntry />

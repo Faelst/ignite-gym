@@ -21,7 +21,7 @@ export function ExerciseCard({ ...rest }: Props) {
         />
 
         <VStack flex={1} ml={4} justifyContent="center">
-          <Heading color="gray.100" fontSize="md">
+          <Heading color="gray.100" fontSize="md" fontFamily="heading">
             Remada curvada
           </Heading>
 
