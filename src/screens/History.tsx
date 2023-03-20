@@ -1,7 +1,10 @@
 import { HistoryCard } from '@components/HistoryCard'
 import { ScreenHeader } from '@components/ScreenHeader'
-import { Heading, SectionList, Text, VStack } from 'native-base'
-import { useState } from 'react'
+import { Heading, SectionList, Text, VStack, useToast } from 'native-base'
+import { useCallback, useEffect, useState } from 'react'
+import { AppError } from '../utils/AppError'
+import { api } from '../services/api'
+import { useFocusEffect } from '@react-navigation/native'
 
 const historyData = [
   {
@@ -37,7 +40,43 @@ const historyData = [
 ]
 
 export function History() {
+  const toast = useToast()
+  const [isLoading, setIsLoading] = useState(true)
   const [histories, setHistories] = useState(historyData)
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchHistory()
+    }, []),
+  )
+
+  const fetchHistory = async () => {
+    try {
+      setIsLoading(true)
+      const { data } = await api.get('/history')
+      setHistories(data)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível carregar o historico. Tende mais tarde.'
+
+      toast.show({
+        title,
+        placement: 'top',
+        bg: 'red.500',
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchHistory()
+    }, []),
+  )
 
   return (
     <VStack flex={1}>
@@ -46,7 +85,7 @@ export function History() {
       <SectionList
         sections={histories}
         keyExtractor={(item, index) => `${item} - ${index}`}
-        renderItem={({ item }) => <HistoryCard />}
+        renderItem={({ item }) => <HistoryCard histories={histories} />}
         renderSectionHeader={({ section: { title } }) => (
           <Heading
             color="gray.200"

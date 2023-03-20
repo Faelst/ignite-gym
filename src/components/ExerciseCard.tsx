@@ -1,16 +1,20 @@
 import { Heading, HStack, Icon, Image, Text, VStack } from 'native-base'
 import { TouchableOpacity, TouchableOpacityProps } from 'react-native'
 import { Entypo } from '@expo/vector-icons'
+import { ExerciseDto } from '../dtos/ExercisesDTO'
+import { api } from '../services/api'
 
-type Props = TouchableOpacityProps & {}
+type Props = TouchableOpacityProps & {
+  exercise: ExerciseDto
+}
 
-export function ExerciseCard({ ...rest }: Props) {
+export function ExerciseCard({ exercise, ...rest }: Props) {
   return (
     <TouchableOpacity {...rest}>
       <HStack bg="gray.500" alignItems="center" p={2} rounded="md" mb={5}>
         <Image
           source={{
-            uri: 'https://www.wikihow.com/images_en/thumb/d/db/Work-Your-Back-With-Dumbbells-Step-2-Version-5.jpg/v4-460px-Work-Your-Back-With-Dumbbells-Step-2-Version-5.jpg',
+            uri: `${api.defaults.baseURL}/exercise/thumb/${exercise.thumb}`,
           }}
           alt="Exercício de costas"
           w={16}
@@ -22,11 +26,11 @@ export function ExerciseCard({ ...rest }: Props) {
 
         <VStack flex={1} ml={4} justifyContent="center">
           <Heading color="gray.100" fontSize="md" fontFamily="heading">
-            Remada curvada
+            {exercise.name}
           </Heading>
 
           <Text color="gray.200" fontSize="sm" numberOfLines={2}>
-            3 séries x 10 repetições
+            {exercise.series} séries x {exercise.repetitions} repetições
           </Text>
         </VStack>
 

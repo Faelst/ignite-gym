@@ -5,8 +5,12 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { Avatar } from './Avatar'
 import { useNavigation } from '@react-navigation/native'
 import { AppNavigatorRouterProps } from '@routes/app.routes'
+import defaultUserAvatar from '@assets/userPhotoDefault.png'
+import { useAuth } from '@hooks/useAuth'
 
 export function HomeHeader() {
+  const { user, signOut } = useAuth()
+
   const navigation = useNavigation<AppNavigatorRouterProps>()
 
   const handleNavigateToProfile = () => {
@@ -18,9 +22,13 @@ export function HomeHeader() {
       <TouchableOpacity onPress={handleNavigateToProfile}>
         <Avatar
           size={12}
-          source={{
-            uri: 'https://avatars.githubusercontent.com/u/22012801?v=4',
-          }}
+          source={
+            user.avatar
+              ? {
+                  uri: user.avatar,
+                }
+              : defaultUserAvatar
+          }
           alt="Imagem do usuário"
           mr={4}
         />
@@ -35,11 +43,11 @@ export function HomeHeader() {
           fontWeight="bold"
           fontFamily="heading"
         >
-          Rafael Silverio
+          {user.name}
         </Heading>
       </VStack>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={signOut}>
         <Icon
           as={MaterialIcons}
           name="logout"

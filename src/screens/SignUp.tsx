@@ -1,5 +1,13 @@
 import { useNavigation } from '@react-navigation/native'
-import { Center, Heading, Image, Text, VStack } from 'native-base'
+import {
+  Alert,
+  Center,
+  Heading,
+  Image,
+  Text,
+  VStack,
+  useToast,
+} from 'native-base'
 import { useForm, Controller } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -11,6 +19,11 @@ import { Input } from '@components/Input'
 import { Button } from '@components/Button'
 
 import { AuthNavigatorRouterProps } from '@routes/auth.routes'
+import { api } from '@services/api'
+import axios from 'axios'
+import { AppError } from '@utils/AppError'
+import { useState } from 'react'
+import { useAuth } from '@hooks/useAuth'
 
 type FormDataTypeProps = {
   name: string
@@ -40,6 +53,10 @@ const SignUpSchema = yup.object().shape({
 })
 
 export function SignUp() {
+  const [isLoading, setIsLoading] = useState(false)
+  const toast = useToast()
+  const { signIn } = useAuth()
+
   const {
     reset,
     handleSubmit,
@@ -56,9 +73,26 @@ export function SignUp() {
     navigation.navigate('signIn')
   }
 
-  const onSubmit = (data: FormDataTypeProps) => {
-    console.log(data)
-    reset()
+  const onSubmit = async (data: FormDataTypeProps) => {
+    try {
+      setIsLoading(true)
+      await api.post('/users', data)
+      await signIn(data.email, data.password)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+      const title = isAppError
+        ? error.message
+        : 'Nao foi possível criar a conta. Tente mais tarde...'
+
+      toast.show({
+        title,
+        placement: 'top',
+        bg: 'red.500',
+      })
+    } finally {
+      setIsLoading(false)
+      reset()
+    }
   }
 
   return (
@@ -146,7 +180,11 @@ export function SignUp() {
         />
       </Center>
 
-      <Button title="Criar e acessar" onPress={handleSubmit(onSubmit)} />
+      <Button
+        title="Criar e acessar"
+        onPress={handleSubmit(onSubmit)}
+        isLoading={isLoading}
+      />
       <Button
         title="Voltar para o login"
         variant="outline"
